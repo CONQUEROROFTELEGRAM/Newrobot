@@ -87,7 +87,7 @@ Welcome to the help menu!
     "" if not ALLOW_EXCL else "\nAll commands can either be used with / or !.\n",
 )
 
-NIMMIROBOT_IMG = "https://i.imgur.com/1aKfIG3.jpg"
+MASHAROBOT_IMG = "https://i.imgur.com/1aKfIG3.jpg"
 
 DONATE_STRING = """donation contact @tubots"""
 
@@ -196,7 +196,7 @@ def start(update: Update, context: CallbackContext):
         else:
             first_name = update.effective_user.first_name
             update.effective_message.reply_photo(
-                NIMMIROBOT_IMG,
+                MASHAROBOT_IMG,
                 PM_START_TEXT.format(
                     escape_markdown(first_name), escape_markdown(context.bot.first_name)
                 ),

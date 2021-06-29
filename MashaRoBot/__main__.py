@@ -4,7 +4,7 @@ import re
 from sys import argv
 from typing import Optional
 
-from MashaRoBot import (
+from Nimmirobot import (
     ALLOW_EXCL,
     CERT_PATH,
     DONATION_LINK,
@@ -19,7 +19,6 @@ from MashaRoBot import (
     dispatcher,
     StartTime,
     telethn,
-    pbot,
     updater,
 )
 
@@ -74,32 +73,23 @@ def get_readable_time(seconds: int) -> str:
 
 
 PM_START_TEXT = """
-Hi {}, Nice to meet you!
-This is a complete Bot to help you manage your groups easily!
+Hi {}, This is a complete Bot to help you manage your groups easily and safely! 
+ 
+Add me in a Supergroup and promote me as Admin to let me get in action❗
+ ❓ WHAT ARE THE COMMANDS? ❓
+Press /help to see all the commands and how they work!
 """
-
-buttons = [
-    [
-        InlineKeyboardButton(
-            text="Add me to your group", url="t.me/MissAurelia_bot?startgroup=true"),
-    ],
-    [
-        InlineKeyboardButton(text="Commands", callback_data="help_back"),
-    ],
-    [
-        InlineKeyboardButton(
-            text=" Support", url="https://t.me/AuroraSupportChat"
-        ),
-    ],
-]
-
 
 HELP_STRINGS = """
 Welcome to the help menu!
-"""
-START_IMG = "https://i.imgur.com/0aeced684a2ae051d7b58.jpg"
+""".format(
+    dispatcher.bot.first_name,
+    "" if not ALLOW_EXCL else "\nAll commands can either be used with / or !.\n",
+)
 
-DONATE_STRING = """No need.. I'm rich"""
+NIMMIROBOT_IMG = "https://i.imgur.com/1aKfIG3.jpg"
+
+DONATE_STRING = """donation contact @tubots"""
 
 IMPORTED = {}
 MIGRATEABLE = []
@@ -184,10 +174,13 @@ def start(update: Update, context: CallbackContext):
                     update.effective_chat.id,
                     HELPABLE[mod].__help__,
                     InlineKeyboardMarkup(
-                        [[InlineKeyboardButton(text="⬅️ BACK", callback_data="help_back")]]
+                        [[InlineKeyboardButton(text="Back", callback_data="help_back")]]
                     ),
                 )
-
+            elif args[0].lower() == "markdownhelp":
+                IMPORTED["extras"].markdown_help_sender(update)
+            elif args[0].lower() == "disasters":
+                IMPORTED["disasters"].send_disasters(update)
             elif args[0].lower().startswith("stngs_"):
                 match = re.match("stngs_(.*)", args[0].lower())
                 chat = dispatcher.bot.getChat(match.group(1))
@@ -201,11 +194,44 @@ def start(update: Update, context: CallbackContext):
                 IMPORTED["rules"].send_rules(update, args[0], from_pm=True)
 
         else:
-            update.effective_message.reply_text(
-                PM_START_TEXT,
-                reply_markup=InlineKeyboardMarkup(buttons),
+            first_name = update.effective_user.first_name
+            update.effective_message.reply_photo(
+                NIMMIROBOT_IMG,
+                PM_START_TEXT.format(
+                    escape_markdown(first_name), escape_markdown(context.bot.first_name)
+                ),
                 parse_mode=ParseMode.MARKDOWN,
-                timeout=60,
+                disable_web_page_preview=True,
+                reply_markup=InlineKeyboardMarkup(
+                    [
+                        [
+                            InlineKeyboardButton(
+                                text="Add to your group",
+                                url="t.me/{}?startgroup=true".format(
+                                    context.bot.username
+                                ),
+                            )
+                        ],
+                        [
+                            InlineKeyboardButton(
+                                text="Support Group",
+                                url=f"https://t.me/unitedbotsupport",
+                            ),
+                        ],
+                        [
+                            InlineKeyboardButton(
+                                text="guide",
+                                url="https://tubots",
+                            )
+                        ],
+                        [
+                            InlineKeyboardButton(
+                                text="source code",
+                                url="https://github.com/Basi-mon/Nimmi-Robot",
+                            )
+                        ],
+                    ]
+                ),
             )
     else:
         update.effective_message.reply_text(
@@ -214,34 +240,6 @@ def start(update: Update, context: CallbackContext):
             ),
             parse_mode=ParseMode.HTML,
         )
-
-
-def error_handler(update, context):
-    """Log the error and send a telegram message to notify the developer."""
-    # Log the error before we do anything else, so we can see it even if something breaks.
-    LOGGER.error(msg="Exception while handling an update:", exc_info=context.error)
-
-    # traceback.format_exception returns the usual python message about an exception, but as a
-    # list of strings rather than a single string, so we have to join them together.
-    tb_list = traceback.format_exception(
-        None, context.error, context.error.__traceback__
-    )
-    tb = "".join(tb_list)
-
-    # Build the message with some markup and additional information about what happened.
-    message = (
-        "An exception was raised while handling an update\n"
-        "<pre>update = {}</pre>\n\n"
-        "<pre>{}</pre>"
-    ).format(
-        html.escape(json.dumps(update.to_dict(), indent=2, ensure_ascii=False)),
-        html.escape(tb),
-    )
-
-    if len(message) >= 4096:
-        message = message[:4096]
-    # Finally, send the message
-    context.bot.send_message(chat_id=OWNER_ID, text=message, parse_mode=ParseMode.HTML)
 
 
 # for test purposes
@@ -288,7 +286,7 @@ def help_button(update, context):
         if mod_match:
             module = mod_match.group(1)
             text = (
-                "「 *HELP FOR* *{}* 」\n".format(
+                "Here is the help for the *{}* module:\n".format(
                     HELPABLE[module].__mod_name__
                 )
                 + HELPABLE[module].__help__
@@ -298,7 +296,7 @@ def help_button(update, context):
                 parse_mode=ParseMode.MARKDOWN,
                 disable_web_page_preview=True,
                 reply_markup=InlineKeyboardMarkup(
-                    [[InlineKeyboardButton(text="「 GO BACK 」", callback_data="help_back")]]
+                    [[InlineKeyboardButton(text="Back", callback_data="help_back")]]
                 ),
             )
 
@@ -338,67 +336,6 @@ def help_button(update, context):
     except BadRequest:
         pass
 
-
-@run_async
-def Masha_about_callback(update: Update, context: CallbackContext):
-    query = update.callback_query
-    if query.data == "masha_":
-        query.message.edit_text(
-            text=""" ℹ️ I'm *MASHA*, a powerful group management bot built to help you manage your group easily.
-                 ❍ I can restrict users.
-                 ❍ I can greet users with customizable welcome messages and even set a group's rules.
-                 ❍ I have an advanced anti-flood system.
-                 ❍ I can warn users until they reach max warns, with each predefined actions such as ban, mute, kick, etc.
-                 ❍ I have a note keeping system, blacklists, and even predetermined replies on certain keywords.
-                 ❍ I check for admins' permissions before executing any command and more stuffs
-                 \n_Masha's licensed under the GNU General Public License v3.0_
-                 Here is the [💾Repository](https://github.com/Mr-Dark-Prince/MashaRoBot).
-                 If you have any question about Masha, let us know at @WasteBots.""",
-            parse_mode=ParseMode.MARKDOWN,
-            disable_web_page_preview=True,
-            reply_markup=InlineKeyboardMarkup(
-                [
-                 [
-                    InlineKeyboardButton(text="Back", callback_data="masha_back")
-                 ]
-                ]
-            ),
-        )
-    elif query.data == "masha_back":
-        query.message.edit_text(
-                PM_START_TEXT,
-                reply_markup=InlineKeyboardMarkup(buttons),
-                parse_mode=ParseMode.MARKDOWN,
-                timeout=60,
-                disable_web_page_preview=False,
-        )
-
-
-@run_async
-def Source_about_callback(update: Update, context: CallbackContext):
-    query = update.callback_query
-    if query.data == "source_":
-        query.message.edit_text(
-            text=""" Hi..🤗 I'm *MASHA*
-                 \nHere is the [Source Code](https://github.com/Mr-Dark-Prince/MashaRoBot) .""",
-            parse_mode=ParseMode.MARKDOWN,
-            disable_web_page_preview=False,
-            reply_markup=InlineKeyboardMarkup(
-                [
-                 [
-                    InlineKeyboardButton(text="Go Back", callback_data="source_back")
-                 ]
-                ]
-            ),
-        )
-    elif query.data == "source_back":
-        query.message.edit_text(
-                PM_START_TEXT,
-                reply_markup=InlineKeyboardMarkup(buttons),
-                parse_mode=ParseMode.MARKDOWN,
-                timeout=60,
-                disable_web_page_preview=False,
-        )
 
 @run_async
 def get_help(update: Update, context: CallbackContext):
@@ -672,17 +609,6 @@ def migrate_chats(update: Update, context: CallbackContext):
 
 
 def main():
-
-    if SUPPORT_CHAT is not None and isinstance(SUPPORT_CHAT, str):
-        try:
-            dispatcher.bot.sendMessage(f"@{SUPPORT_CHAT}", "Yes I'm alive 😹")
-        except Unauthorized:
-            LOGGER.warning(
-                "Bot isnt able to send message to support_chat, go and check!"
-            )
-        except BadRequest as e:
-            LOGGER.warning(e.message)
-
     test_handler = CommandHandler("test", test)
     start_handler = CommandHandler("start", start)
 
@@ -692,17 +618,12 @@ def main():
     settings_handler = CommandHandler("settings", get_settings)
     settings_callback_handler = CallbackQueryHandler(settings_button, pattern=r"stngs_")
 
-    about_callback_handler = CallbackQueryHandler(Masha_about_callback, pattern=r"masha_")
-    source_callback_handler = CallbackQueryHandler(Source_about_callback, pattern=r"source_")
-
     donate_handler = CommandHandler("donate", donate)
     migrate_handler = MessageHandler(Filters.status_update.migrate, migrate_chats)
 
     # dispatcher.add_handler(test_handler)
     dispatcher.add_handler(start_handler)
     dispatcher.add_handler(help_handler)
-    dispatcher.add_handler(about_callback_handler)
-    dispatcher.add_handler(source_callback_handler)
     dispatcher.add_handler(settings_handler)
     dispatcher.add_handler(help_callback_handler)
     dispatcher.add_handler(settings_callback_handler)
@@ -721,7 +642,7 @@ def main():
             updater.bot.set_webhook(url=URL + TOKEN)
 
     else:
-        LOGGER.info("Using long polling.")
+        LOGGER.info("Nimmibot Using long polling.")
         updater.start_polling(timeout=15, read_latency=4, clean=True)
 
     if len(argv) not in (1, 3, 4):
@@ -735,5 +656,4 @@ def main():
 if __name__ == "__main__":
     LOGGER.info("Successfully loaded modules: " + str(ALL_MODULES))
     telethn.start(bot_token=TOKEN)
-    pbot.start()
     main()

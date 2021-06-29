@@ -97,7 +97,7 @@ buttons = [
 HELP_STRINGS = """
 Welcome to the help menu!
 """
-MASHA_IMG = "https://i.imgur.com/0aeced684a2ae051d7b58.jpg"
+MASHAROBOT_IMG = "https://i.imgur.com/0aeced684a2ae051d7b58.jpg"
 
 DONATE_STRING = """No need.. I'm rich"""
 

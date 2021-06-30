@@ -379,7 +379,7 @@ GDMORNING_HANDLER = DisableAbleMessageHandler(
 )
 GDNIGHT_HANDLER = DisableAbleMessageHandler(
     Filters.regex(r"(?i)(good night)"), goodnight, friendly="goodnight"
-)
+) 
 
 
 dispatcher.add_handler(WEEBIFY_HANDLER)

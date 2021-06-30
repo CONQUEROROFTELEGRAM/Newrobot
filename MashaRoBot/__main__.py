@@ -89,7 +89,7 @@ buttons = [
     ],
     [
         InlineKeyboardButton(
-            text="Chat", url="https://t.me/HappinessValley"
+            text="Chat", url="https://t.me/AuroraSupportChat"
         ),
     ],
 ]

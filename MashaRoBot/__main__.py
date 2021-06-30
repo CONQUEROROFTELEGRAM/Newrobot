@@ -74,36 +74,28 @@ def get_readable_time(seconds: int) -> str:
 
 
 PM_START_TEXT = """
-ഹായ്...സ്വാഗതം! എന്റെ പേര് [คυŕҽɭเค..♜..⚑] [.](https://telegra.ph/file/418fe04d27f1fb02788e3.png)
+ഹായ്...സ്വാഗതം! എന്റെ പേര് [ᗴ ᖇ ᗯ Ꮖ ᑎ ᗩ] [.](https://telegra.ph/file/418fe04d27f1fb02788e3.png)
 വ്യാജ സുഹൃത്തുക്കൾ നിഴലുകൾ പോലെയാണ്. അവർ നിങ്ങളെ സൂര്യനിൽ പിന്തുടർന്ന് ഇരുട്ടിൽ ഉപേക്ഷിക്കുന്നു 👻 
 """
 
 buttons = [
     [
         InlineKeyboardButton(
-            text="➕️ ADD MASHA TO YOUR GROUP ➕️", url="t.me/MashaRoBot?startgroup=true"),
+            text=" Add me to your group ", url="t.me/MissErwina_bot?startgroup=true"),
     ],
     [
-        InlineKeyboardButton(text="ℹ️ ABOUT", callback_data="masha_"),
-        InlineKeyboardButton(text="📚 COMMANDS", callback_data="help_back"),
+        InlineKeyboardButton(text=" Comments", callback_data="help_back"),
     ],
     [
         InlineKeyboardButton(
-            text="💾 SOURCE", callback_data="source_"),
-        InlineKeyboardButton(
-            text="👥 SUPPORT", url="https://t.me/wastebots"
+            text="Chat", url="https://t.me/HappinessValley"
         ),
     ],
 ]
 
 
 HELP_STRINGS = """
-*『HELP BUTTONS HERE』*
-• `/help`*:* PM's you this message[.](https://telegra.ph/file/418fe04d27f1fb02788e3.png)
- • `/help` `<module name>`*:* PM's you info about that module.
- • `/settings`*:*
-   • in PM: will send you your settings for all supported modules.
-   • in a group: will redirect you to pm, with all that chat's settings.
+*MAIN* COMMANDS AVAILABLE:[{}](https://telegra.ph/file/63567336a76806c5d82a8.jpg)
 
 """
 
@@ -193,7 +185,7 @@ def start(update: Update, context: CallbackContext):
                     update.effective_chat.id,
                     HELPABLE[mod].__help__,
                     InlineKeyboardMarkup(
-                        [[InlineKeyboardButton(text="⬅️ BACK", callback_data="help_back")]]
+                        [[InlineKeyboardButton(text="Back", callback_data="help_back")]]
                     ),
                 )
 

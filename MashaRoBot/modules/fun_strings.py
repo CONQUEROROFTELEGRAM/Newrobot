@@ -36,7 +36,6 @@ GDNIGHT = (
     "`Every day, you encourage me to do new things, friend! May tonight’s rest bring a new day that overflows with courage and exciting events!`",
 )
 
-# dq
 GDMORNING = (
     "`Life is full of uncertainties. But there will always be a sunrise after every sunset. Good morning!`",
     "`It doesn’t matter how bad was your yesterday. Today, you are going to make it a good one. Wishing you a good morning!`",

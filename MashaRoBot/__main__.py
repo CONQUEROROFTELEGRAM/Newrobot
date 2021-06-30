@@ -74,9 +74,9 @@ def get_readable_time(seconds: int) -> str:
 
 
 PM_START_TEXT = """
-Hey, nice to meet you!
+Hello, Nice to meet you!
 I'm ᗴ ᖇ ᗯ Ꮖ ᑎ ᗩ, 
-a full-fledged group management bot built to help you manage your group easily [.](https://telegra.ph/file/3dd2ae3ee9088d0e79244.png)
+A full-fledged group management bot built to help you manage your group easily [.](https://telegra.ph/file/3dd2ae3ee9088d0e79244.png)
 """
 
 buttons = [

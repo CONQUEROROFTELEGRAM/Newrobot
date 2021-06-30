@@ -74,8 +74,8 @@ def get_readable_time(seconds: int) -> str:
 
 
 PM_START_TEXT = """
-Hello! I am *Senku*.
-I'm here to help you manage your groups! Hit *📚Commands* button below to find out more about how to use me to my full potential[.](https://telegra.ph/file/418fe04d27f1fb02788e3.png)
+ഹായ്...സ്വാഗതം! എന്റെ പേര് [คυŕҽɭเค..♜..⚑] [.](https://telegra.ph/file/418fe04d27f1fb02788e3.png)
+വ്യാജ സുഹൃത്തുക്കൾ നിഴലുകൾ പോലെയാണ്. അവർ നിങ്ങളെ സൂര്യനിൽ പിന്തുടർന്ന് ഇരുട്ടിൽ ഉപേക്ഷിക്കുന്നു 👻 
 """
 
 buttons = [

@@ -369,6 +369,13 @@ EIGHTBALL_HANDLER = DisableAbleCommandHandler("8ball", eightball)
 TABLE_HANDLER = DisableAbleCommandHandler("table", table)
 SHOUT_HANDLER = DisableAbleCommandHandler("shout", shout)
 WEEBIFY_HANDLER = DisableAbleCommandHandler("weebify", weebify)
+GDMORNING_HANDLER = DisableAbleMessageHandler(
+    Filters.regex(r"(?i)(good morning)"), goodmorning, friendly="goodmorning"
+)
+GDNIGHT_HANDLER = DisableAbleMessageHandler(
+    Filters.regex(r"(?i)(good night)"), goodnight, friendly="goodnight"
+)
+
 
 dispatcher.add_handler(WEEBIFY_HANDLER)
 dispatcher.add_handler(SHOUT_HANDLER)

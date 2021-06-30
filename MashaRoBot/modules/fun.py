@@ -325,14 +325,14 @@ def weebify(update: Update, context: CallbackContext):
 
 
   @run_async
-def goodnight(bot: Bot, update: Update):
+def goodnight(update: Update, context: CallbackContext):
     message = update.effective_message
     reply = random.choice(fun_strings.GDNIGHT)
     message.reply_text(reply, parse_mode=ParseMode.MARKDOWN)
 
 
 @run_async
-def goodmorning(bot: Bot, update: Update):
+def goodmorning(update: Update, context: CallbackContext):
     message = update.effective_message
     reply = random.choice(fun_strings.GDMORNING)
     message.reply_text(reply, parse_mode=ParseMode.MARKDOWN)

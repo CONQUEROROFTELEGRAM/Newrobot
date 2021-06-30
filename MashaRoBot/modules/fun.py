@@ -323,21 +323,26 @@ def weebify(update: Update, context: CallbackContext):
     else:
         message.reply_text(string)
 
-
   @run_async
 def goodnight(update: Update, context: CallbackContext):
-    message = update.effective_message
-    reply = random.choice(fun_strings.GDNIGHT)
-    message.reply_text(reply, parse_mode=ParseMode.MARKDOWN)
-
-
-@run_async
+    reply_text = (
+        update.effective_message.reply_to_message.reply_text
+        if update.effective_message.reply_to_message
+        else update.effective_message.reply_text
+    )
+    reply_text(random.choice(fun_strings.GDNIGHT))
+      
+    
+  @run_async
 def goodmorning(update: Update, context: CallbackContext):
-    message = update.effective_message
-    reply = random.choice(fun_strings.GDMORNING)
-    message.reply_text(reply, parse_mode=ParseMode.MARKDOWN)
-
-             
+    reply_text = (
+        update.effective_message.reply_to_message.reply_text
+        if update.effective_message.reply_to_message
+        else update.effective_message.reply_text
+    )
+    reply_text(random.choice(fun_strings.GDMORNING))
+       
+           
 __help__ = """
  ❍ /runs*:* reply a random string from an array of replies
  ❍ /slap*:* slap a user, or get slapped if not a reply

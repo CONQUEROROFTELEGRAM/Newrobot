@@ -74,8 +74,9 @@ def get_readable_time(seconds: int) -> str:
 
 
 PM_START_TEXT = """
-ഹായ്...സ്വാഗതം! എന്റെ പേര് [ᗴ ᖇ ᗯ Ꮖ ᑎ ᗩ] [.](https://telegra.ph/file/3dd2ae3ee9088d0e79244.png)
-വ്യാജ സുഹൃത്തുക്കൾ നിഴലുകൾ പോലെയാണ്. അവർ നിങ്ങളെ സൂര്യനിൽ പിന്തുടർന്ന് ഇരുട്ടിൽ ഉപേക്ഷിക്കുന്നു 👻 
+Hello {} , nice to meet you!
+I'm ᗴ ᖇ ᗯ Ꮖ ᑎ ᗩ, 
+a full-fledged group management bot built to help you manage your group easily [.](https://telegra.ph/file/3dd2ae3ee9088d0e79244.png)
 """
 
 buttons = [
@@ -88,7 +89,7 @@ buttons = [
     ],
     [
         InlineKeyboardButton(
-            text="Chat", url="https://t.me/HappinessValley"
+            text="Chat", url="https://t.me/Erwinasupport"
         ),
     ],
 ]
